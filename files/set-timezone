@@ -1,0 +1,4 @@
+#!/bin/bash -e
+[[ -n "$TZ" ]] || (echo "Must specify TZ as env var." >&2; exit 1)
+echo "$TZ" > /etc/timezone
+dpkg-reconfigure --frontend noninteractive tzdata

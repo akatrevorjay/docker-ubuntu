@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+# HACK runit sends HUP to PID 1, causing our shell to exit
+trap ':' HUP
+
+# Do not use exec here so our trap stays.
+"$@"
