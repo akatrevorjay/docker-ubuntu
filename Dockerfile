@@ -1,5 +1,9 @@
 FROM ubuntu:trusty
 MAINTAINER Trevor Joynson "docker@skywww.net"
+
+# Add files
+ADD ./files /opt/base
+
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
@@ -10,9 +14,6 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 # Update repos, upgrade possible
 RUN apt-get update -qq
 #RUN apt-get upgrade -qqy
-
-# Add files
-ADD ./files /opt/base
 
 # Fix locale
 ENV LANGUAGE en_US.UTF-8
