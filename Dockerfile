@@ -12,9 +12,10 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 #RUN sed -i "s/\$codename/$(lsb_release -cs)/g" /etc/apt/sources.list.d/multiverse.list
 
 # Update repos, upgrade possible
-RUN apt-get update -qq \
-    && apt-get dist-upgrade -qqy \
-    && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update -qq \
+#    && apt-get dist-upgrade -qqy \
+#    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+#    && :
 
 # Fix locale
 ENV LANGUAGE en_US.UTF-8
