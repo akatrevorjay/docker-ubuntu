@@ -12,8 +12,9 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 #RUN sed -i "s/\$codename/$(lsb_release -cs)/g" /etc/apt/sources.list.d/multiverse.list
 
 # Update repos, upgrade possible
-RUN apt-get update -qq
-#RUN apt-get upgrade -qqy
+RUN apt-get update -qq \
+    && apt-get dist-upgrade -qqy \
+    && rm -rf /var/lib/apt/lists/*
 
 # Fix locale
 ENV LANGUAGE en_US.UTF-8
@@ -26,6 +27,3 @@ RUN /opt/base/set-locale
 
 # Add in entrypoint
 ENTRYPOINT ["/opt/base/entrypoint"]
-
-# Cleanup
-RUN rm -rf /var/lib/apt/lists/*
