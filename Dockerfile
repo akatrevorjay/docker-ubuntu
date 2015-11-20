@@ -1,30 +1,28 @@
 FROM ubuntu:trusty
 MAINTAINER Trevor Joynson "docker@skywww.net"
 
-# Add files
-ADD ./files /opt/base
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NONINTERACTIVE_SEEN=true
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV DEBCONF_NONINTERACTIVE_SEEN true
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=$LANG
+ENV TZ=Etc/UTC
 
-# Add multiverse repos
-#ADD ./multiverse.list /etc/apt/sources.list.d/multiverse.list
-#RUN sed -i "s/\$codename/$(lsb_release -cs)/g" /etc/apt/sources.list.d/multiverse.list
-
-# Update repos, upgrade possible
 #RUN apt-get update -qq \
-#    && apt-get dist-upgrade -qqy \
+#    && apt-get install -qqy software-properties-common \
+#    && apt-add-repository multiverse \  # Add multiverse repos
+#    && apt-get dist-upgrade -qqy \      # Upgrade possible
 #    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 #    && :
 
-# Fix locale
-ENV LANGUAGE en_US.UTF-8
-ENV LANG $LANGUAGE
-RUN /opt/base/set-locale
+# Add files
+#ADD sbin /sbin/
 
-# Timezone
-#ENV TZ "US/Eastern"
-#RUN /opt/base/set-timezone
-
-# Add in entrypoint
-ENTRYPOINT ["/opt/base/entrypoint"]
+RUN echo "Setting locale to $LANG" \
+    && locale-gen "$LANG" \
+    && dpkg-reconfigure --frontend noninteractive locales \
+    && :
+#    && echo "Setting timezone to $TZ" \
+#    && echo "$TZ" > /etc/timezone \
+#    && dpkg-reconfigure --frontend noninteractive tzdata \
+#    && :

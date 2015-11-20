@@ -1,4 +1,0 @@
-#!/bin/bash -e
-[[ -n "$LANG" ]] || (echo "Must specify LANG as env var." >&2; exit 1)
-locale-gen "$LANG"
-dpkg-reconfigure --frontend noninteractive locales
